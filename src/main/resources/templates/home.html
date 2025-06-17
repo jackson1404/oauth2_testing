@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>OAuth2 Login</title>
+</head>
+<body>
+<h1>Welcome!</h1>
+<div th:if="${name}">
+    <p>Name: <span th:text="${name}"></span></p>
+    <p>Username: <span th:text="${login}"></span></p>
+    <img th:src="${avatar}" width="100"/>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Logout"/>
+    </form>
+
+</div>
+<div th:if="${name == null}">
+    <a href="/oauth2/authorization/github">Login with GitHub</a>
+</div>
+<script>
+    function callLogout() {
+        fetch('/logoutSession', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json' // Optional, for JSON body
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                sessionStorage.clear(); // Optional
+                window.location.href = '/login?logout=true';
+            } else {
+                console.error("Logout failed: ", response.status);
+            }
+        })
+        .catch(error => {
+            console.error("Logout error: ", error);
+        });
+    }
+
+</script>
+</body>
+
+</html>
