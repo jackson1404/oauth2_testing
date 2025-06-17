@@ -51,55 +51,64 @@ public class HomeController {
         return "login";
     }
 
-//    @PostMapping("/logoutSession")
-//    @ResponseBody
-//    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
-//        System.out.println("reach logout");
-//        new SecurityContextLogoutHandler().logout(request, response, null); // clears session and security context
-//        return ResponseEntity.ok().build();
-//    }
-//
-//
-
-
+    //for google
     @GetMapping("/home")
     public String home(@AuthenticationPrincipal OAuth2User principal, Model model) {
         if (principal != null) {
             model.addAttribute("name", principal.getAttribute("name"));
-            model.addAttribute("login", principal.getAttribute("login"));
-            model.addAttribute("avatar", principal.getAttribute("avatar_url"));
+            model.addAttribute("email", principal.getAttribute("email"));
+            model.addAttribute("avatar", principal.getAttribute("picture"));
+
+            // Additional common Google-specific attributes:
+            model.addAttribute("subjectId", principal.getAttribute("sub"));        // Unique ID for the user
+            model.addAttribute("firstName", principal.getAttribute("given_name")); // First name
+            model.addAttribute("lastName", principal.getAttribute("family_name")); // Last name
+            model.addAttribute("emailVerified", principal.getAttribute("email_verified")); // Is email verified? (boolean)
+            model.addAttribute("locale", principal.getAttribute("locale"));        // User's locale (e.g., "en")
+            model.addAttribute("hostedDomain", principal.getAttribute("hd"));
         }
         return "home";
     }
 
-    @GetMapping("/getToken")
-    @ResponseBody
-    public ResponseEntity<?> getToken(@RegisteredOAuth2AuthorizedClient("github") OAuth2AuthorizedClient client){
-        String token = client.getAccessToken().getTokenValue();
-        return ResponseEntity.ok(token);
-    }
 
-    @GetMapping("/getRepos")
-    public String getUserRepo(@RegisteredOAuth2AuthorizedClient("github")OAuth2AuthorizedClient client, Model model){
-        String token = client.getAccessToken().getTokenValue();
-        System.out.println("The token is " + token);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
+//    @GetMapping("/home")
+//    public String home(@AuthenticationPrincipal OAuth2User principal, Model model) {
+//        if (principal != null) {
+//            model.addAttribute("name", principal.getAttribute("name"));
+//            model.addAttribute("login", principal.getAttribute("login"));
+//            model.addAttribute("avatar", principal.getAttribute("avatar_url"));
+//        }
+//        return "home";
+//    }
 
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<List<GithubResponseDto>> response = restTemplate.exchange(
-                "https://api.github.com/user/repos",
-                HttpMethod.GET,
-                entity,
-                new ParameterizedTypeReference<List<GithubResponseDto>>() {}
-        );
-
-        model.addAttribute("repos", response.getBody());
-        return "userRepo"; // A Thymeleaf page to render repo list
-
-    }
+//    @GetMapping("/getToken")
+//    @ResponseBody
+//    public ResponseEntity<?> getToken(@RegisteredOAuth2AuthorizedClient("github") OAuth2AuthorizedClient client){
+//        String token = client.getAccessToken().getTokenValue();
+//        return ResponseEntity.ok(token);
+//    }
+//
+//    @GetMapping("/getRepos")
+//    public String getUserRepo(@RegisteredOAuth2AuthorizedClient("github")OAuth2AuthorizedClient client, Model model){
+//        String token = client.getAccessToken().getTokenValue();
+//        System.out.println("The token is " + token);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setBearerAuth(token);
+//
+//        HttpEntity<String> entity = new HttpEntity<>(headers);
+//
+//        RestTemplate restTemplate = new RestTemplate();
+//        ResponseEntity<List<GithubResponseDto>> response = restTemplate.exchange(
+//                "https://api.github.com/user/repos",
+//                HttpMethod.GET,
+//                entity,
+//                new ParameterizedTypeReference<List<GithubResponseDto>>() {}
+//        );
+//
+//        model.addAttribute("repos", response.getBody());
+//        return "userRepo"; // A Thymeleaf page to render repo list
+//
+//    }
 
 
 
