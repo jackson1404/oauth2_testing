@@ -14,8 +14,8 @@ spring:
         registration:
           # --- GOOGLE CONFIGURATION (UNCOMMENTED) ---
           google:
-            client-id: 976496236052-kr0clk8ovkujnaod8faf7li9e8o6o2ce.apps.googleusercontent.com # Get this from Google Cloud Console
-            client-secret: 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 # Get this from Google Cloud Console
+#            client-id: 976496236052-kr0clk8ovkujnaod8faf7li9e8o6o2ce.apps.googleusercontent.com     # Get this from Google Cloud Console
+#            client-secret: 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     # Get this from Google Cloud Console
             scope:
               - profile     # Access to basic profile info (name, picture)
               - email       # Access to email address
