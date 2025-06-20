@@ -28,7 +28,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/" , "/login/**", "/oauth2/**").permitAll()
+                        .requestMatchers("/" , "/login/**", "/oauth2/**", "/calendar/**").permitAll()
                         .requestMatchers("/getRepos", "/getCalendarEvent").authenticated()
                         .anyRequest().permitAll()
                 )

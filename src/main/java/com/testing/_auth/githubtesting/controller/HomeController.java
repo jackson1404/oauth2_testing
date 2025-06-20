@@ -6,14 +6,12 @@
  * *************************************************************/
 package com.testing._auth.githubtesting.controller;
 
+import com.testing._auth.githubtesting.dto.CalendarEventRequestDto;
 import com.testing._auth.githubtesting.dto.GithubResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
@@ -21,14 +19,13 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * HomeController Class.
@@ -101,6 +98,8 @@ public class HomeController {
 
 
 
+
+
 //    @GetMapping("/home")
 //    public String home(@AuthenticationPrincipal OAuth2User principal, Model model) {
 //        if (principal != null) {
@@ -111,12 +110,8 @@ public class HomeController {
 //        return "home";
 //    }
 
-    @GetMapping("/getToken")
-    @ResponseBody
-    public ResponseEntity<?> getToken(@RegisteredOAuth2AuthorizedClient("google") OAuth2AuthorizedClient client){
-        String token = client.getAccessToken().getTokenValue();
-        return ResponseEntity.ok(token);
-    }
+
+
 //
 //    @GetMapping("/getRepos")
 //    public String getUserRepo(@RegisteredOAuth2AuthorizedClient("github")OAuth2AuthorizedClient client, Model model){
