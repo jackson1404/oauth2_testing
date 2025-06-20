@@ -1,27 +1,28 @@
-#server:
-#  port: 8081
-#  servlet:
-#    session:
-#      cookie:
-#        secure: false      # Allow cookies on HTTP (only for localhost)
-#        http-only: true    # Still keeps it safe from JavaScript
-#        same-site: lax     # Better compatibility for localhost dev
-#      timeout: 30m
-#spring:
-#  security:
-#    oauth2:
-#      client:
-#        registration:
-#          # --- GOOGLE CONFIGURATION (UNCOMMENTED) ---
-#          google:
-##            client-id: 976496236052-kr0clk8ovkujnaod8faf7li9e8o6o2ce.apps.googleusercontent.com     # Get this from Google Cloud Console
-##            client-secret: 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     # Get this from Google Cloud Console
-#            scope:
-#              - profile     # Access to basic profile info (name, picture)
-#              - email       # Access to email address
-#            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-#
-#          # --- GITHUB CONFIGURATION (UNCOMMENTED) ---
+server:
+  port: 8081
+  servlet:
+    session:
+      cookie:
+        secure: false      # Allow cookies on HTTP (only for localhost)
+        http-only: true    # Still keeps it safe from JavaScript
+        same-site: lax     # Better compatibility for localhost dev
+      timeout: 30m
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          # --- GOOGLE CONFIGURATION (UNCOMMENTED) ---
+          google:
+            client-id: 976496236052-kr0clk8ovkujnaod8faf7li9e8o6o2ce.apps.googleusercontent.com     # Get this from Google Cloud Console
+            client-secret: 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     # Get this from Google Cloud Console
+            scope:
+              - profile     # Access to basic profile info (name, picture)
+              - email       # Access to email address
+              - https://www.googleapis.com/auth/calendar.readonly
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+
+          # --- GITHUB CONFIGURATION (UNCOMMENTED) ---
 #          github:
 #            client-id: Ov23liyOXeEU62MIxBqO
 #            client-secret: 93b0596e84091ac8e6648091b3e563ba4f725e14
@@ -30,19 +31,19 @@
 #              - repo
 #              - notifications
 #            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-#        provider:
-#          # --- GOOGLE PROVIDER (OPTIONAL, Spring often knows defaults) ---
-#          google:
-#            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
-#            token-uri: https://oauth2.googleapis.com/token
-#            user-info-uri: https://openidconnect.googleapis.com/v1/userinfo
-#            user-name-attribute: sub
-#
-#          # --- GITHUB PROVIDER (UNCOMMENTED) ---
+        provider:
+          # --- GOOGLE PROVIDER (OPTIONAL, Spring often knows defaults) ---
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://openidconnect.googleapis.com/v1/userinfo
+            user-name-attribute: sub
+
+          # --- GITHUB PROVIDER (UNCOMMENTED) ---
 #          github:
 #            authorization-uri: https://github.com/login/oauth/authorize
 #            token-uri: https://github.com/login/oauth/access_token
 #            user-info-uri: https://api.github.com/user
-#
-#  application:
-#    name: 0auth-githubtesting
+
+  application:
+    name: 0auth-githubtesting

@@ -29,7 +29,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/" , "/login/**", "/oauth2/**").permitAll()
-                        .requestMatchers("/getRepos").authenticated()
+                        .requestMatchers("/getRepos", "/getCalendarEvent").authenticated()
                         .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth2 -> oauth2

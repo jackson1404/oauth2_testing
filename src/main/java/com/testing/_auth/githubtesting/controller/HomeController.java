@@ -51,6 +51,8 @@ public class HomeController {
         return "login";
     }
 
+    private final RestTemplate restTemplate = new RestTemplate();
+
     //for google
     @GetMapping("/home")
     public String home(@AuthenticationPrincipal OAuth2User principal, Model model) {
@@ -70,6 +72,34 @@ public class HomeController {
         return "home";
     }
 
+    @GetMapping("/getCalendarEvent")
+    public String fetchCalendarEvent(@RegisteredOAuth2AuthorizedClient("google") OAuth2AuthorizedClient client, Model model ){
+
+        String accessToken = client.getAccessToken().getTokenValue();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        // Call Google Calendar API
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+                HttpMethod.GET,
+                entity,
+                String.class
+        );
+
+        String calendarResponse = response.getBody();
+
+        // Add to model for Thymeleaf
+        model.addAttribute("calendarData", calendarResponse);
+        return "calendar"; // return to calendar.html view
+
+    }
+
+
 
 //    @GetMapping("/home")
 //    public String home(@AuthenticationPrincipal OAuth2User principal, Model model) {
@@ -81,12 +111,12 @@ public class HomeController {
 //        return "home";
 //    }
 
-//    @GetMapping("/getToken")
-//    @ResponseBody
-//    public ResponseEntity<?> getToken(@RegisteredOAuth2AuthorizedClient("github") OAuth2AuthorizedClient client){
-//        String token = client.getAccessToken().getTokenValue();
-//        return ResponseEntity.ok(token);
-//    }
+    @GetMapping("/getToken")
+    @ResponseBody
+    public ResponseEntity<?> getToken(@RegisteredOAuth2AuthorizedClient("google") OAuth2AuthorizedClient client){
+        String token = client.getAccessToken().getTokenValue();
+        return ResponseEntity.ok(token);
+    }
 //
 //    @GetMapping("/getRepos")
 //    public String getUserRepo(@RegisteredOAuth2AuthorizedClient("github")OAuth2AuthorizedClient client, Model model){
