@@ -8,8 +8,16 @@ server:
         same-site: lax     # Better compatibility for localhost dev
       timeout: 30m
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+
   security:
     oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://accounts.google.com
       client:
         registration:
           # --- GOOGLE CONFIGURATION (UNCOMMENTED) ---
@@ -19,8 +27,9 @@ spring:
             scope:
               - profile     # Access to basic profile info (name, picture)
               - email       # Access to email address
-              - https://www.googleapis.com/auth/calendar
-              - https://www.googleapis.com/auth/calendar.events
+#              - https://www.googleapis.com/auth/calendar
+#              - https://www.googleapis.com/auth/calendar.events
+              - https://www.googleapis.com/auth/drive.file  # ✅ Needed to upload to user's Drive
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
 
           # --- GITHUB CONFIGURATION (UNCOMMENTED) ---
@@ -51,4 +60,6 @@ spring:
 
 logging:
   level:
-    org.springframework.web.client.RestTemplate: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG # If you use this
+    com.testing._auth.githubtesting: DEBUG # Your package

@@ -1,17 +1,20 @@
 /***************************************************************
- * Author       :	 
- * Created Date :	
- * Version      : 	
- * History  :	
+ * Author       :
+ * Created Date :
+ * Version      :
+ * History  :
  * *************************************************************/
 package com.testing._auth.githubtesting.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 /**
  * SecurityConfig Class.
@@ -27,8 +30,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/" , "/login/**", "/oauth2/**", "/calendar/**").permitAll()
+                        .requestMatchers("/", "/login/**", "/oauth2/**", "/calendar/**","/drive/**").permitAll()
                         .requestMatchers("/getRepos", "/getCalendarEvent").authenticated()
                         .anyRequest().permitAll()
                 )
@@ -36,7 +40,9 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .defaultSuccessUrl("/home", true)
                 )
-
+//                .oauth2ResourceServer(resourceServer -> resourceServer
+//                        .jwt(withDefaults())  // enable JWT validation for bearer tokens
+//                )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login?logout=true")
                         .invalidateHttpSession(true)

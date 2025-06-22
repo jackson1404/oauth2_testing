@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload to Google Drive</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; }
+        #result { margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<h1>Upload File to Google Drive</h1>
+
+<form id="upload-form" enctype="multipart/form-data">
+    <input type="file" id="file" name="file" required>
+    <button type="submit">Upload</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+    document.getElementById('upload-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('file', document.getElementById('file').files[0]);
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.textContent = 'Uploading...';
+
+        fetch('/drive/upload-drive', {
+            method: 'POST',
+            body: formData,
+            // No 'Content-Type' header, browser sets it with boundary
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.fileId) {
+                resultDiv.innerHTML = `
+                    <p>Upload successful!</p>
+                    <p>File Name: ${data.fileName}</p>
+                    <p>File ID: ${data.fileId}</p>
+                    <p><a href="https://drive.google.com/file/d/${data.fileId}/view" target="_blank">View on Google Drive</a></p>
+                `;
+            } else {
+                 resultDiv.textContent = 'Upload failed: ' + (data.message || JSON.stringify(data));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            resultDiv.textContent = 'An error occurred during upload.';
+        });
+    });
+</script>
+
+</body>
+</html>
