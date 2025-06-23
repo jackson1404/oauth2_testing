@@ -32,7 +32,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login/**", "/oauth2/**", "/calendar/**","/drive/**").permitAll()
+                        .requestMatchers("/", "/login/**", "/oauth2/**", "/calendars/**","/drive/**").permitAll()
                         .requestMatchers("/getRepos", "/getCalendarEvent").authenticated()
                         .anyRequest().permitAll()
                 )
