@@ -39,8 +39,8 @@ spring:
             scope:
               - profile     # Access to basic profile info (name, picture)
               - email       # Access to email address
-#              - https://www.googleapis.com/auth/calendar
-#              - https://www.googleapis.com/auth/calendar.events
+              - https://www.googleapis.com/auth/calendar
+              - https://www.googleapis.com/auth/calendar.events
               - https://www.googleapis.com/auth/drive.file  # ✅ Needed to upload to user's Drive
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
 
