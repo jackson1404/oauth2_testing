@@ -8,6 +8,18 @@ server:
         same-site: lax     # Better compatibility for localhost dev
       timeout: 30m
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: jackson14042004@gmail.com
+    password: fybnhqmmhlwwzgvf
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
   servlet:
     multipart:
       max-file-size: 10MB
